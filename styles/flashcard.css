@@ -1,0 +1,18 @@
+ruby {
+  line-height: 2.2;
+  padding-top: 2px;
+}
+
+rt {
+  margin-bottom: 2px;
+}
+
+/* 큰 텍스트용 ruby 태그 스타일 */
+.large-text-ruby ruby {
+  line-height: 2; /* 더 넓은 줄 간격 */
+  padding-top: 8px; /* 위쪽에 더 많은 공간 추가 */
+}
+
+.large-text-ruby rt {
+  margin-bottom: 8px; /* 후리가나와 텍스트 간격 증가 */
+}

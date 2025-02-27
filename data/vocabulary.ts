@@ -1,0 +1,365 @@
+export interface VocabularyItem {
+  word: string
+  reading: string
+  meaning: string
+  example: string
+  exampleReading: string
+  exampleMeaning: string
+}
+
+export interface VocabularyChapter {
+  id: number
+  title: string
+  words: VocabularyItem[]
+}
+
+export interface VocabularyLevel {
+  id: string
+  title: string
+  description: string
+  chapters: VocabularyChapter[]
+}
+
+export const vocabularyData: VocabularyLevel[] = [
+  {
+    id: "n5",
+    title: "N5",
+    description: "기초 단계의 일본어 단어 (800개 단어)",
+    chapters: [
+      {
+        id: 1,
+        title: "1장",
+        words: [
+          {
+            word: "食べる",
+            reading: "たべる",
+            meaning: "먹다",
+            example: "毎日朝ごはんを食べます",
+            exampleReading: "まいにちあさごはんをたべます",
+            exampleMeaning: "매일 아침밥을 먹습니다",
+          },
+          {
+            word: "飲む",
+            reading: "のむ",
+            meaning: "마시다",
+            example: "水を飲みます",
+            exampleReading: "みずをのみます",
+            exampleMeaning: "물을 마십니다",
+          },
+          {
+            word: "見る",
+            reading: "みる",
+            meaning: "보다",
+            example: "テレビを見ています",
+            exampleReading: "てれびをみています",
+            exampleMeaning: "텔레비전을 보고 있습니다",
+          },
+          {
+            word: "聞く",
+            reading: "きく",
+            meaning: "듣다",
+            example: "音楽を聞いています",
+            exampleReading: "おんがくをきいています",
+            exampleMeaning: "음악을 듣고 있습니다",
+          },
+          {
+            word: "書く",
+            reading: "かく",
+            meaning: "쓰다",
+            example: "手紙を書きます",
+            exampleReading: "てがみをかきます",
+            exampleMeaning: "편지를 씁니다",
+          },
+          {
+            word: "読む",
+            reading: "よむ",
+            meaning: "읽다",
+            example: "本を読んでいます",
+            exampleReading: "ほんをよんでいます",
+            exampleMeaning: "책을 읽고 있습니다",
+          },
+          {
+            word: "買う",
+            reading: "かう",
+            meaning: "사다",
+            example: "新しい服を買いました",
+            exampleReading: "あたらしいふくをかいました",
+            exampleMeaning: "새 옷을 샀습니다",
+          },
+          {
+            word: "行く",
+            reading: "いく",
+            meaning: "가다",
+            example: "学校に行きます",
+            exampleReading: "がっこうにいきます",
+            exampleMeaning: "학교에 갑니다",
+          },
+          {
+            word: "来る",
+            reading: "くる",
+            meaning: "오다",
+            example: "友達が来ました",
+            exampleReading: "ともだちがきました",
+            exampleMeaning: "친구가 왔습니다",
+          },
+          {
+            word: "帰る",
+            reading: "かえる",
+            meaning: "돌아가다",
+            example: "家に帰ります",
+            exampleReading: "いえにかえります",
+            exampleMeaning: "집에 돌아갑니다",
+          },
+          {
+            word: "寝る",
+            reading: "ねる",
+            meaning: "자다",
+            example: "早く寝ました",
+            exampleReading: "はやくねました",
+            exampleMeaning: "일찍 잤습니다",
+          },
+          {
+            word: "起きる",
+            reading: "おきる",
+            meaning: "일어나다",
+            example: "朝早く起きます",
+            exampleReading: "あさはやくおきます",
+            exampleMeaning: "아침 일찍 일어납니다",
+          },
+          {
+            word: "勉強する",
+            reading: "べんきょうする",
+            meaning: "공부하다",
+            example: "日本語を勉強しています",
+            exampleReading: "にほんごをべんきょうしています",
+            exampleMeaning: "일본어를 공부하고 있습니다",
+          },
+          {
+            word: "働く",
+            reading: "はたらく",
+            meaning: "일하다",
+            example: "会社で働いています",
+            exampleReading: "かいしゃではたらいています",
+            exampleMeaning: "회사에서 일하고 있습니다",
+          },
+          {
+            word: "休む",
+            reading: "やすむ",
+            meaning: "쉬다",
+            example: "今日は休みます",
+            exampleReading: "きょうはやすみます",
+            exampleMeaning: "오늘은 쉽니다",
+          },
+          {
+            word: "話す",
+            reading: "はなす",
+            meaning: "말하다",
+            example: "日本語で話します",
+            exampleReading: "にほんごではなします",
+            exampleMeaning: "일본어로 말합니다",
+          },
+          {
+            word: "住む",
+            reading: "すむ",
+            meaning: "살다",
+            example: "東京に住んでいます",
+            exampleReading: "とうきょうにすんでいます",
+            exampleMeaning: "도쿄에 살고 있습니다",
+          },
+          {
+            word: "使う",
+            reading: "つかう",
+            meaning: "사용하다",
+            example: "パソコンを使います",
+            exampleReading: "ぱそこんをつかいます",
+            exampleMeaning: "컴퓨터를 사용합니다",
+          },
+          {
+            word: "待つ",
+            reading: "まつ",
+            meaning: "기다리다",
+            example: "友達を待っています",
+            exampleReading: "ともだちをまっています",
+            exampleMeaning: "친구를 기다리고 있습니다",
+          },
+          {
+            word: "会う",
+            reading: "あう",
+            meaning: "만나다",
+            example: "先生に会いました",
+            exampleReading: "せんせいにあいました",
+            exampleMeaning: "선생님을 만났습니다",
+          },
+        ],
+      },
+      {
+        id: 2,
+        title: "2장",
+        words: [
+          {
+            word: "学校",
+            reading: "がっこう",
+            meaning: "학교",
+            example: "学校は駅の近くです",
+            exampleReading: "がっこうはえきのちかくです",
+            exampleMeaning: "학교는 역 근처에 있습니다",
+          },
+          {
+            word: "先生",
+            reading: "せんせい",
+            meaning: "선생님",
+            example: "先生は親切です",
+            exampleReading: "せんせいはしんせつです",
+            exampleMeaning: "선생님은 친절합니다",
+          },
+          {
+            word: "学生",
+            reading: "がくせい",
+            meaning: "학생",
+            example: "私は大学生です",
+            exampleReading: "わたしはだいがくせいです",
+            exampleMeaning: "저는 대학생입니다",
+          },
+          {
+            word: "家族",
+            reading: "かぞく",
+            meaning: "가족",
+            example: "家族と住んでいます",
+            exampleReading: "かぞくとすんでいます",
+            exampleMeaning: "가족과 살고 있습니다",
+          },
+          {
+            word: "友達",
+            reading: "ともだ��",
+            meaning: "친구",
+            example: "友達と話します",
+            exampleReading: "ともだちとはなします",
+            exampleMeaning: "친구와 이야기합니다",
+          },
+          {
+            word: "時間",
+            reading: "じかん",
+            meaning: "시간",
+            example: "時間がありません",
+            exampleReading: "じかんがありません",
+            exampleMeaning: "시간이 없습니다",
+          },
+          {
+            word: "今日",
+            reading: "きょう",
+            meaning: "오늘",
+            example: "今日は晴れです",
+            exampleReading: "きょうははれです",
+            exampleMeaning: "오늘은 맑습니다",
+          },
+          {
+            word: "明日",
+            reading: "あした",
+            meaning: "내일",
+            example: "明日は雨です",
+            exampleReading: "あしたはあめです",
+            exampleMeaning: "내일은 비입니다",
+          },
+          {
+            word: "昨日",
+            reading: "きのう",
+            meaning: "어제",
+            example: "昨日は忙しかったです",
+            exampleReading: "きのうはいそがしかったです",
+            exampleMeaning: "어제는 바빴습니다",
+          },
+          {
+            word: "朝",
+            reading: "あさ",
+            meaning: "아침",
+            example: "朝ごはんを食べます",
+            exampleReading: "あさごはんをたべます",
+            exampleMeaning: "아침밥을 먹습니다",
+          },
+          {
+            word: "昼",
+            reading: "ひる",
+            meaning: "낮",
+            example: "昼ごはんを食べました",
+            exampleReading: "ひるごはんをたべました",
+            exampleMeaning: "점심밥을 먹었습니다",
+          },
+          {
+            word: "晩",
+            reading: "ばん",
+            meaning: "저녁",
+            example: "晩ごはんを作ります",
+            exampleReading: "ばんごはんをつくります",
+            exampleMeaning: "저녁밥을 만듭니다",
+          },
+          {
+            word: "月",
+            reading: "つき",
+            meaning: "달",
+            example: "月が綺麗です",
+            exampleReading: "つきがきれいです",
+            exampleMeaning: "달이 예쁩니다",
+          },
+          {
+            word: "年",
+            reading: "とし",
+            meaning: "해, 나이",
+            example: "今年は忙しいです",
+            exampleReading: "ことしはいそがしいです",
+            exampleMeaning: "올해는 바쁩니다",
+          },
+          {
+            word: "人",
+            reading: "ひと",
+            meaning: "사람",
+            example: "あの人は日本人です",
+            exampleReading: "あのひとはにほんじんです",
+            exampleMeaning: "저 사람은 일본인입니다",
+          },
+          {
+            word: "男",
+            reading: "おとこ",
+            meaning: "남자",
+            example: "男の人です",
+            exampleReading: "おとこのひとです",
+            exampleMeaning: "남자입니다",
+          },
+          {
+            word: "女",
+            reading: "おんな",
+            meaning: "여자",
+            example: "女の人です",
+            exampleReading: "おんなのひとです",
+            exampleMeaning: "여자입니다",
+          },
+          {
+            word: "子供",
+            reading: "こども",
+            meaning: "아이",
+            example: "子供が遊んでいます",
+            exampleReading: "こどもがあそんでいます",
+            exampleMeaning: "아이가 놀고 있습니다",
+          },
+          {
+            word: "犬",
+            reading: "いぬ",
+            meaning: "개",
+            example: "犬を飼っています",
+            exampleReading: "いぬをかっています",
+            exampleMeaning: "개를 키우고 있습니다",
+          },
+          {
+            word: "猫",
+            reading: "ねこ",
+            meaning: "고양이",
+            example: "猫が好きです",
+            exampleReading: "ねこがすきです",
+            exampleMeaning: "고양이를 좋아합니다",
+          },
+        ],
+      },
+    ],
+  },
+  // 다른 레벨(N4-N1)도 비슷한 구조로 추가 가능
+]
+
