@@ -30,10 +30,47 @@ export function Flashcard({ vocabulary }: FlashcardProps) {
 
   const currentWord = vocabulary[currentIndex];
 
-  const playAudio = async (text: string) => {
-    const speech = new SpeechSynthesisUtterance(text);
-    speech.lang = "ja-JP";
-    window.speechSynthesis.speak(speech);
+  const isExampleCard = (index: number): boolean => {
+    return showExample
+      ? !showExampleCards[index]
+      : showExampleCards[index] ?? false;
+  };
+
+  const handlePlayAudio = async (
+    word: VocabularyItem,
+    isSentence: boolean,
+    index?: number
+  ) => {
+    try {
+      if (index) isSentence = isExampleCard(index);
+
+      // 서버로 보낼 객체에 isSentence 플래그를 포함시킵니다.
+      const requestBody = { ...word, isSentence };
+
+      const response = await fetch("/api/tts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        console.error(
+          "오디오 파일을 가져오지 못했습니다:",
+          response.statusText
+        );
+        return;
+      }
+
+      const { publicUrl } = await response.json();
+
+      // Audio 객체를 통해 음성 파일 재생
+      const audio = new Audio(publicUrl);
+      audio.play();
+    } catch (error) {
+      console.error("음성 재생 중 오류 발생:", error);
+    }
   };
 
   const goToPrevious = () => {
@@ -60,19 +97,6 @@ export function Flashcard({ vocabulary }: FlashcardProps) {
   };
 
   if (!currentWord) return null;
-
-  const isExampleCard = (index: number): boolean => {
-    return showExample
-      ? !showExampleCards[index]
-      : showExampleCards[index] ?? false;
-  };
-
-  const handlePlayAudio = (index: number, word: VocabularyItem) => {
-    const textToRead = isExampleCard(index)
-      ? word.example_sentence
-      : word.japanese;
-    playAudio(textToRead);
-  };
 
   return (
     <div className={`w-full ${isListView ? "max-w-6xl" : "max-w-2xl"} mx-auto`}>
@@ -173,7 +197,7 @@ export function Flashcard({ vocabulary }: FlashcardProps) {
                   size="icon"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handlePlayAudio(index, word);
+                    handlePlayAudio(word, true, index);
                   }}
                   className="absolute bottom-2 right-2"
                 >
@@ -209,7 +233,7 @@ export function Flashcard({ vocabulary }: FlashcardProps) {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => playAudio(currentWord.japanese)}
+                onClick={() => handlePlayAudio(currentWord, false)}
                 className="absolute bottom-2 right-2"
               >
                 <Volume2 className="h-6 w-6" />
@@ -236,7 +260,7 @@ export function Flashcard({ vocabulary }: FlashcardProps) {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => playAudio(currentWord.example_sentence)}
+                  onClick={() => handlePlayAudio(currentWord, true)}
                   className="absolute bottom-2 right-2"
                 >
                   <Volume2 className="h-6 w-6" />

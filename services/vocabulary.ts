@@ -11,6 +11,7 @@ export interface VocabularyItem {
   example_sentence: string;
   japaneseFurigana?: string;
   exampleSentenceFurigana?: string;
+  isSentence?: boolean;
 }
 
 export const JLPT_LEVELS = ["N5", "N4", "N3", "N2", "N1"];
