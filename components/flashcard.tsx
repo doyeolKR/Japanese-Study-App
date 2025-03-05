@@ -47,7 +47,7 @@ export function Flashcard({ vocabulary }: FlashcardProps) {
       // 서버로 보낼 객체에 isSentence 플래그를 포함시킵니다.
       const requestBody = { ...word, isSentence };
 
-      const response = await fetch("/api/tts", {
+      const response = await fetch("/api/polly", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
