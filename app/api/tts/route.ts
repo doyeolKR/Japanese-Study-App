@@ -68,16 +68,38 @@ function getAudioParams(wordData: VocabularyItem) {
 
 // Supabase 스토리지에서 특정 파일의 존재 여부를 체크하는 함수
 async function checkFileExists(filePath: string) {
-  const [folder, fileName] = filePath.split("/");
-  const { data: files, error } = await supabase.storage
-    .from("japanese-audio-files")
-    .list(folder, { limit: 100, offset: 0 });
+  try {
+    const [folder, fileName] = filePath.split("/");
+    const { data: files, error } = await supabase.storage
+      .from("japanese-audio-files")
+      .list(folder, { limit: 100, offset: 0 });
 
-  if (error) {
-    console.error("Error listing files:", error);
+    if (error) {
+      console.error("Error listing files:", error);
+      console.error(`Error details - message: ${error.message}`);
+      return false;
+    }
+
+    return files.some((item) => item.name === fileName);
+  } catch (err) {
+    console.error("Unexpected error in checkFileExists:", err);
     return false;
   }
-  return files.some((item) => item.name === fileName);
+}
+
+// 백그라운드에서 오디오 업로드 처리 (await 없이 실행)
+function uploadAudioInBackground(audioBuffer: Buffer, filePath: string) {
+  uploadAudio(audioBuffer, filePath)
+    .then(() => {
+      console.log(`Audio successfully uploaded to ${filePath}`);
+    })
+    .catch((error) => {
+      // 오류 객체를 더 자세히 로깅
+      console.error(`Background upload error:`, error);
+      if (error.message) {
+        console.error(`Error message: ${error.message}`);
+      }
+    });
 }
 
 export async function POST(request: NextRequest) {
@@ -98,12 +120,15 @@ export async function POST(request: NextRequest) {
     // 파일이 없으면 AWS Polly로 음성 생성
     const audioBuffer = await synthesizeSpeech(text);
 
-    // 업로드 완료까지 기다림
-    await uploadAudio(audioBuffer, filePath);
+    // 백그라운드에서 Supabase에 업로드 처리 (응답을 기다리지 않음)
+    uploadAudioInBackground(audioBuffer, filePath);
 
-    // 업로드된 파일의 공개 URL 반환
-    const publicUrl = getPublicUrl(filePath);
-    return NextResponse.json({ publicUrl });
+    // Base64로 인코딩하여 클라이언트에 즉시 전달
+    const base64Audio = Buffer.from(audioBuffer).toString("base64");
+    return NextResponse.json({
+      audioData: `data:audio/mpeg;base64,${base64Audio}`,
+      filePath, // 나중에 클라이언트가 캐싱할 수 있도록 파일 경로도 함께 전달
+    });
   } catch (error) {
     console.error("Error in API Route:", error);
     return NextResponse.error();

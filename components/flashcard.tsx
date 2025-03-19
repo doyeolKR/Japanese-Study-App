@@ -63,10 +63,15 @@ export function Flashcard({ vocabulary }: FlashcardProps) {
         return;
       }
 
-      const { publicUrl } = await response.json();
+      // 서버 응답 처리
+      const data = await response.json();
+
+      // publicUrl이 있으면 그대로 사용 (캐시된 경우)
+      // audioData가 있으면 base64 데이터를 사용 (새로 생성된 경우)
+      const audioSource = data.publicUrl || data.audioData;
 
       // Audio 객체를 통해 음성 파일 재생
-      const audio = new Audio(publicUrl);
+      const audio = new Audio(audioSource);
       audio.play();
     } catch (error) {
       console.error("음성 재생 중 오류 발생:", error);
