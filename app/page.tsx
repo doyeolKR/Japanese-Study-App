@@ -20,23 +20,21 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-black text-white py-20 md:py-32">
+      <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-20 md:py-32">
         {/* Background Image */}
-        <div className="absolute inset-0">
+        {/* <div className="absolute inset-0">
           <Image
             src="/images/hero.png"
             alt="Japanese Learning Background"
             fill
-            className="object-cover opacity-70"
+            className="object-cover opacity-40"
             priority
           />
-        </div>
-
+        </div> */}
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 right-0 h-40 bg-[linear-gradient(to_right,#ffffff33_1px,transparent_1px),linear-gradient(to_bottom,#ffffff33_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
         </div>
-
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/2 space-y-8">
@@ -93,7 +91,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
         {/* Wave Divider */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg
