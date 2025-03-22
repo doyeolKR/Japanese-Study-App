@@ -20,7 +20,18 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-20 md:py-32">
+      <section className="relative overflow-hidden bg-black text-white py-20 md:py-32">
+        {/* Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/hero.png"
+            alt="Japanese Learning Background"
+            fill
+            className="object-cover opacity-70"
+            priority
+          />
+        </div>
+
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 right-0 h-40 bg-[linear-gradient(to_right,#ffffff33_1px,transparent_1px),linear-gradient(to_bottom,#ffffff33_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
@@ -126,7 +137,6 @@ export default function Home() {
               description="체계적인 설명과 다양한 예문으로 일본어 문법을 쉽게 이해하고 활용하세요. 수준별 문법 패턴을 제공합니다."
               linkText="문법 학습하기"
               linkHref="/grammar"
-              highlighted={true}
             />
 
             <FeatureCard
@@ -361,26 +371,20 @@ function FeatureCard({
   description,
   linkText,
   linkHref,
-  highlighted = false,
 }: {
   icon: React.ReactNode;
   title: string;
   description: string;
   linkText: string;
   linkHref: string;
-  highlighted?: boolean;
 }) {
   return (
     <Card
-      className={`h-full transition-all hover:shadow-lg ${
-        highlighted ? "border-blue-500 shadow-md" : ""
-      }`}
+      className={`group h-full transition-all shadow-md hover:shadow-lg hover:border-blue-500`}
     >
       <CardContent className="p-6 flex flex-col h-full">
         <div
-          className={`rounded-full p-3 w-fit mb-5 ${
-            highlighted ? "bg-blue-50" : "bg-muted"
-          }`}
+          className={`rounded-full p-3 w-fit mb-5 bg-muted group-hover:bg-blue-50`}
         >
           {icon}
         </div>
