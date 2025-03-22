@@ -1,6 +1,6 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { GrammarCategoryCard } from "@/components/grammar-category-card"
-import { grammarCategories } from "@/data/grammar"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { GrammarCategoryCard } from "@/components/grammar-category-card";
+import { grammarCategories } from "@/data/grammar";
 
 export default function GrammarPage() {
   return (
@@ -28,6 +28,5 @@ export default function GrammarPage() {
         </Tabs>
       </div>
     </div>
-  )
+  );
 }
-

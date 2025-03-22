@@ -3,13 +3,14 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { User } from "@/lib/types/auth";
 import { getCurrentUser, signOut } from "@/lib/auth";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   signOut: () => Promise<void>;
   checkUser: () => Promise<User | null>;
+  isAuthenticated: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -17,55 +18,46 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
-  const pathname = usePathname();
-
-  // 비인증 페이지 목록 (로그인, 회원가입 등)
-  const publicPaths = ["/login", "/register", "/verify-email", "/"];
 
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      // 랜딩 페이지나 비인증 페이지에서는 인증 체크를 스킵
-      if (publicPaths.includes(pathname)) {
-        setLoading(false);
-        return;
+    // 로컬 스토리지에서 로그인 상태 확인만 수행
+    if (typeof window !== "undefined") {
+      const forceLogin = localStorage.getItem("forceLogin");
+      if (forceLogin === "true") {
+        localStorage.removeItem("forceLogin");
+        window.location.reload();
       }
+    }
 
-      try {
-        const { user: currentUser, error } = await getCurrentUser();
-
-        if (error || !currentUser) {
-          // 인증되지 않은 상태에서 보호된 페이지 접근 시 로그인 페이지로 리다이렉트
-          if (!publicPaths.includes(pathname)) {
-            router.push("/login");
-          }
-        } else {
-          setUser(currentUser);
-        }
-      } catch (error) {
-        // 오류 발생 시 로그인 페이지로 리다이렉트
-        if (!publicPaths.includes(pathname)) {
-          router.push("/login");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    checkAuthStatus();
-  }, [pathname]);
+    // 초기 로딩 상태 해제
+    setLoading(false);
+  }, []);
 
   async function checkUser() {
+    setLoading(true);
     try {
       const { user: currentUser, error } = await getCurrentUser();
 
       if (error) {
-        throw error;
+        setIsAuthenticated(false);
+        setUser(null);
+        return null;
       }
 
-      setUser(currentUser);
-      return currentUser;
+      if (currentUser) {
+        setUser(currentUser);
+        setIsAuthenticated(true);
+        return currentUser;
+      } else {
+        setIsAuthenticated(false);
+        setUser(null);
+        return null;
+      }
     } catch (error) {
+      setIsAuthenticated(false);
+      setUser(null);
       return null;
     } finally {
       setLoading(false);
@@ -79,6 +71,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw error;
       }
       setUser(null);
+      setIsAuthenticated(false);
       router.push("/login");
     } catch (error) {
       // 로그아웃 오류 처리
@@ -92,18 +85,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         loading,
         signOut: handleSignOut,
         checkUser,
+        isAuthenticated,
       }}
     >
-      {publicPaths.includes(pathname) ? (
-        children
-      ) : loading ? (
-        // 로딩 상태일 때 표시할 컴포넌트
-        <div className="flex h-screen w-full items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-t-2 border-primary"></div>
-        </div>
-      ) : (
-        children
-      )}
+      {children}
     </AuthContext.Provider>
   );
 }

@@ -15,7 +15,7 @@ import { ModeToggle } from "./mode-toggle";
 import { useAuth } from "@/contexts/auth-context";
 
 export function Header() {
-  const { user, signOut, checkUser } = useAuth();
+  const { user, signOut, checkUser, isAuthenticated } = useAuth();
   const [mounted, setMounted] = useState(false);
 
   // 컴포넌트가 마운트되면 인증 상태를 확인
@@ -116,7 +116,7 @@ export function Header() {
                     >
                       <div className="font-medium">히라가나/카타카나</div>
                       <p className="text-sm text-muted-foreground">
-                        일본어의 기초 문자를 학습하기
+                        일본어 기초 문자 학습하기
                       </p>
                     </Link>
                   </NavigationMenuLink>
@@ -128,7 +128,7 @@ export function Header() {
 
         <div className="flex items-center gap-4">
           <ModeToggle />
-          {mounted && user ? (
+          {mounted && isAuthenticated ? (
             <Button variant="outline" onClick={handleSignOut}>
               로그아웃
             </Button>
