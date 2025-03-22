@@ -1,6 +1,12 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Book, GraduationCap, MessageCircle } from 'lucide-react'
-import Link from "next/link"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Book, GraduationCap, MessageCircle } from "lucide-react";
+import Link from "next/link";
 
 export default function StudyPage() {
   const studyOptions = [
@@ -32,7 +38,7 @@ export default function StudyPage() {
       href: "/kana",
       color: "text-yellow-500",
     },
-  ]
+  ];
 
   return (
     <div className="container mx-auto px-4 py-12">
@@ -47,7 +53,9 @@ export default function StudyPage() {
             <Link key={option.href} href={option.href}>
               <Card className="h-full transition-all hover:shadow-lg hover:-translate-y-1">
                 <CardHeader>
-                  <option.icon className={`w-12 h-12 ${option.color} mx-auto mb-4`} />
+                  <option.icon
+                    className={`w-12 h-12 ${option.color} mx-auto mb-4`}
+                  />
                   <CardTitle className="text-center">{option.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -59,20 +67,7 @@ export default function StudyPage() {
             </Link>
           ))}
         </div>
-
-        <div className="mt-12 text-center">
-          <p className="text-muted-foreground">
-            학습 진행 상황을 확인하고 싶으시다면?
-          </p>
-          <Link 
-            href="/dashboard" 
-            className="text-primary hover:underline"
-          >
-            대시보드로 이동하기
-          </Link>
-        </div>
       </div>
     </div>
-  )
+  );
 }
-
