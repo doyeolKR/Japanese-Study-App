@@ -13,6 +13,66 @@ import {
 } from "@/components/ui/navigation-menu";
 import { ModeToggle } from "./mode-toggle";
 import { useAuth } from "@/contexts/auth-context";
+import { cn } from "@/lib/utils";
+
+const learningItems = [
+  {
+    title: "학습 시작하기",
+    href: "/study",
+    description: "단어, 문법, 회화 학습 선택하기",
+  },
+  {
+    title: "단어 학습",
+    href: "/vocabulary",
+    description: "플래시카드로 JLPT 단어 학습하기",
+  },
+  {
+    title: "문법 학습",
+    href: "/grammar",
+    description: "일본어 문법 패턴 마스터하기",
+  },
+  {
+    title: "회화 연습",
+    href: "/conversation",
+    description: "AI와 함께 회화 연습하기",
+  },
+  {
+    title: "히라가나/카타카나",
+    href: "/kana",
+    description: "일본어 기초 문자 학습하기",
+  },
+];
+
+const ListItem = ({
+  className,
+  title,
+  href,
+  children,
+}: {
+  className?: string;
+  title: string;
+  href: string;
+  children: React.ReactNode;
+}) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <Link
+          href={href}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+        >
+          <div className="text-sm font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </Link>
+      </NavigationMenuLink>
+    </li>
+  );
+};
 
 export function Header() {
   const { user, signOut, checkUser, isAuthenticated } = useAuth();
@@ -53,74 +113,28 @@ export function Header() {
   };
 
   return (
-    <header className="border-b">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <Link href="/" className="text-xl font-bold">
           일본어 학습
         </Link>
 
-        <NavigationMenu>
+        <NavigationMenu className="hidden md:flex">
           <NavigationMenuList>
             <NavigationMenuItem>
               <NavigationMenuTrigger>학습하기</NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="grid gap-3 p-4 w-[400px]">
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href="/study"
-                      className="block p-3 space-y-1 hover:bg-muted rounded-md"
+                <ul className="grid w-[400px] gap-1 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                  {learningItems.map((item) => (
+                    <ListItem
+                      key={item.title}
+                      title={item.title}
+                      href={item.href}
                     >
-                      <div className="font-medium">학습 시작하기</div>
-                      <p className="text-sm text-muted-foreground">
-                        단어, 문법, 회화 학습 선택하기
-                      </p>
-                    </Link>
-                  </NavigationMenuLink>
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href="/vocabulary"
-                      className="block p-3 space-y-1 hover:bg-muted rounded-md"
-                    >
-                      <div className="font-medium">단어 학습</div>
-                      <p className="text-sm text-muted-foreground">
-                        플래시카드로 JLPT 단어 학습하기
-                      </p>
-                    </Link>
-                  </NavigationMenuLink>
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href="/grammar"
-                      className="block p-3 space-y-1 hover:bg-muted rounded-md"
-                    >
-                      <div className="font-medium">문법 학습</div>
-                      <p className="text-sm text-muted-foreground">
-                        일본어 문법 패턴 마스터하기
-                      </p>
-                    </Link>
-                  </NavigationMenuLink>
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href="/conversation"
-                      className="block p-3 space-y-1 hover:bg-muted rounded-md"
-                    >
-                      <div className="font-medium">회화 연습</div>
-                      <p className="text-sm text-muted-foreground">
-                        AI와 함께 회화 연습하기
-                      </p>
-                    </Link>
-                  </NavigationMenuLink>
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href="/kana"
-                      className="block p-3 space-y-1 hover:bg-muted rounded-md"
-                    >
-                      <div className="font-medium">히라가나/카타카나</div>
-                      <p className="text-sm text-muted-foreground">
-                        일본어 기초 문자 학습하기
-                      </p>
-                    </Link>
-                  </NavigationMenuLink>
-                </div>
+                      {item.description}
+                    </ListItem>
+                  ))}
+                </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
           </NavigationMenuList>
