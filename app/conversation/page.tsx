@@ -4,31 +4,30 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Mic, Send, Loader2 } from "lucide-react";
-import { useAuth } from "@/contexts/auth-context";
-import { useRouter } from "next/navigation";
+
+interface Message {
+  role: "user" | "ai";
+  content: string;
+  timestamp: Date;
+}
 
 export default function ConversationPage() {
-  const { checkUser } = useAuth();
-  const router = useRouter();
   const [isRecording, setIsRecording] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [userText, setUserText] = useState("");
-  const [aiResponse, setAiResponse] = useState("");
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // 인증 체크
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   useEffect(() => {
-    async function checkAuth() {
-      const user = await checkUser();
-      if (!user) {
-        router.push("/login");
-      }
-    }
-    checkAuth();
-  }, [checkUser, router]);
+    scrollToBottom();
+  }, [messages]);
 
   // 녹음 시작
   const startRecording = async () => {
@@ -56,20 +55,20 @@ export default function ConversationPage() {
     }
   };
 
-  // 녹음 중지
-  const stopRecording = () => {
+  // 녹음 중지 및 전송
+  const stopRecording = async () => {
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
       mediaRecorderRef.current.stream
         .getTracks()
         .forEach((track) => track.stop());
       setIsRecording(false);
+      setIsProcessing(true);
     }
   };
 
   // 음성을 텍스트로 변환
   const convertSpeechToText = async (audioBlob: Blob) => {
-    setIsProcessing(true);
     try {
       const formData = new FormData();
       formData.append("file", audioBlob, "audio.wav");
@@ -81,7 +80,13 @@ export default function ConversationPage() {
       });
 
       const data = await response.json();
-      setUserText(data.text);
+      const userMessage: Message = {
+        role: "user",
+        content: data.text,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, userMessage]);
+      await getAIResponse(data.text);
     } catch (error) {
       console.error("Error converting speech to text:", error);
     } finally {
@@ -90,8 +95,7 @@ export default function ConversationPage() {
   };
 
   // AI 응답 받기
-  const getAIResponse = async () => {
-    setIsProcessing(true);
+  const getAIResponse = async (userText: string) => {
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -102,12 +106,15 @@ export default function ConversationPage() {
       });
 
       const data = await response.json();
-      setAiResponse(data.response);
+      const aiMessage: Message = {
+        role: "ai",
+        content: data.response,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, aiMessage]);
       await convertTextToSpeech(data.response);
     } catch (error) {
       console.error("Error getting AI response:", error);
-    } finally {
-      setIsProcessing(false);
     }
   };
 
@@ -142,6 +149,31 @@ export default function ConversationPage() {
       <div className="max-w-2xl mx-auto space-y-6">
         <Card className="p-6">
           <div className="space-y-4">
+            <div className="h-[500px] overflow-y-auto space-y-4 mb-4">
+              {messages.map((message, index) => (
+                <div
+                  key={index}
+                  className={`flex ${
+                    message.role === "user" ? "justify-end" : "justify-start"
+                  }`}
+                >
+                  <div
+                    className={`max-w-[80%] rounded-lg p-3 ${
+                      message.role === "user"
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted"
+                    }`}
+                  >
+                    <p className="text-sm">{message.content}</p>
+                    <p className="text-xs mt-1 opacity-70">
+                      {message.timestamp.toLocaleTimeString()}
+                    </p>
+                  </div>
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
+            </div>
+
             <div className="flex justify-center">
               <Button
                 size="lg"
@@ -149,7 +181,12 @@ export default function ConversationPage() {
                 onClick={isRecording ? stopRecording : startRecording}
                 disabled={isProcessing}
               >
-                {isRecording ? (
+                {isProcessing ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    처리 중...
+                  </>
+                ) : isRecording ? (
                   <>
                     <Mic className="mr-2 h-4 w-4" />
                     녹음 중지
@@ -162,45 +199,14 @@ export default function ConversationPage() {
                 )}
               </Button>
             </div>
-
-            {userText && (
-              <div className="space-y-2">
-                <p className="text-sm font-medium">내가 한 말:</p>
-                <p className="p-3 bg-muted rounded-lg">{userText}</p>
-                <Button
-                  onClick={getAIResponse}
-                  disabled={isProcessing}
-                  className="w-full"
-                >
-                  {isProcessing ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      처리 중...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="mr-2 h-4 w-4" />
-                      AI에게 보내기
-                    </>
-                  )}
-                </Button>
-              </div>
-            )}
-
-            {aiResponse && (
-              <div className="space-y-2">
-                <p className="text-sm font-medium">AI의 응답:</p>
-                <p className="p-3 bg-muted rounded-lg">{aiResponse}</p>
-                <audio
-                  ref={audioRef}
-                  onEnded={() => setIsPlaying(false)}
-                  className="w-full"
-                />
-              </div>
-            )}
           </div>
         </Card>
       </div>
+      <audio
+        ref={audioRef}
+        onEnded={() => setIsPlaying(false)}
+        className="hidden"
+      />
     </div>
   );
 }
