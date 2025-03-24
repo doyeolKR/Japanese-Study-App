@@ -1,30 +1,45 @@
-import { generateText } from "ai"
-import { openai } from "@ai-sdk/openai"
+import { NextResponse } from "next/server";
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+});
 
 export async function POST(req: Request) {
-  const { prompt, context } = await req.json()
-
   try {
-    const { text } = await generateText({
-      model: openai("gpt-4o"),
-      prompt: `
-        You are a Japanese language tutor. Respond in Japanese with natural and appropriate expressions.
-        Current context: ${context}
-        User input: ${prompt}
-        
-        Provide response in the following JSON format:
-        {
-          "japanese": "Japanese response",
-          "reading": "Reading in hiragana",
-          "english": "English translation",
-          "explanation": "Brief grammar/vocabulary explanation"
-        }
-      `,
-    })
+    const { message } = await req.json();
 
-    return new Response(text, { status: 200 })
+    if (!message) {
+      return NextResponse.json(
+        { error: "No message provided" },
+        { status: 400 }
+      );
+    }
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4",
+      messages: [
+        {
+          role: "system",
+          content:
+            "당신은 일본어 학습을 도와주는 친절한 AI 튜터입니다. 사용자의 일본어 질문이나 문장에 대해 자연스럽게 응답해주세요. 응답은 일본어로 해주세요.",
+        },
+        {
+          role: "user",
+          content: message,
+        },
+      ],
+      temperature: 0.7,
+    });
+
+    return NextResponse.json({
+      response: completion.choices[0].message.content,
+    });
   } catch (error) {
-    return new Response("Error processing chat request", { status: 500 })
+    console.error("Error in chat:", error);
+    return NextResponse.json(
+      { error: "Failed to get AI response" },
+      { status: 500 }
+    );
   }
 }
-
