@@ -17,12 +17,12 @@ export async function POST(req: Request) {
     }
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-4o",
       messages: [
         {
           role: "system",
           content:
-            "당신은 일본어 학습을 도와주는 친절한 AI 튜터입니다. 사용자의 일본어 질문이나 문장에 대해 자연스럽게 응답해주세요. 응답은 일본어로 해주세요.",
+            "당신은 일본어 학습을 도와주는 친절한 AI 튜터입니다. 사용자의 일본어 질문이나 문장에 대해 자연스럽게 응답해주세요. 응답은 2문장 이내의 일본어로 해주세요.",
         },
         {
           role: "user",
