@@ -1,5 +1,6 @@
 import Kuroshiro from "kuroshiro";
 import KuromojiAnalyzer from "kuroshiro-analyzer-kuromoji";
+import path from "path";
 
 const kuroshiro = new Kuroshiro();
 let isInitialized = false; // 초기화 여부 플래그
@@ -19,7 +20,7 @@ export const initializeKuroshiro = async () => {
 
   // 초기화 시작 - Promise 저장
   initializePromise = kuroshiro.init(
-    new KuromojiAnalyzer({ dictPath: "node_modules/kuromoji/dict/" })
+    new KuromojiAnalyzer({ dictPath: path.join(process.cwd(), "dict") })
   );
 
   try {
