@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/**/*.ts": {
-      "includeFiles": ["dict/**"]
+      "includeFiles": "dict/**"
     }
   }
 }
