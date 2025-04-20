@@ -27,11 +27,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider>
-            <Header />
-            <main className="min-h-screen">{children}</main>
-            <Toaster />
-          </AuthProvider>
+          <Header />
+          <main className="min-h-screen">{children}</main>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

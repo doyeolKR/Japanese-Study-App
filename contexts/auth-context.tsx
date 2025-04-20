@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
 import { User } from "@/lib/types/auth";
 import { getCurrentUser, signOut } from "@/lib/auth";
 import { useRouter } from "next/navigation";
@@ -21,21 +27,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    // 로컬 스토리지에서 로그인 상태 확인만 수행
-    if (typeof window !== "undefined") {
-      const forceLogin = localStorage.getItem("forceLogin");
-      if (forceLogin === "true") {
-        localStorage.removeItem("forceLogin");
-        window.location.reload();
-      }
-    }
+  // useEffect(() => {
+  //   // 로컬 스토리지에서 로그인 상태 확인만 수행
+  //   if (typeof window !== "undefined") {
+  //     const forceLogin = localStorage.getItem("forceLogin");
+  //     if (forceLogin === "true") {
+  //       localStorage.removeItem("forceLogin");
+  //       window.location.reload();
+  //     }
+  //   }
 
-    // 초기 로딩 상태 해제
-    setLoading(false);
-  }, []);
+  //   // 초기 로딩 상태 해제
+  //   setLoading(false);
+  // }, []);
 
-  async function checkUser() {
+  const checkUser = useCallback(async () => {
     setLoading(true);
     try {
       const { user: currentUser, error } = await getCurrentUser();
@@ -62,9 +68,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
-  async function handleSignOut() {
+  const handleSignOut = useCallback(async () => {
     try {
       const { error } = await signOut();
       if (error) {
@@ -76,7 +82,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (error) {
       // 로그아웃 오류 처리
     }
-  }
+  }, [router, signOut]);
+
+  // 컴포넌트 마운트 시 사용자 확인
+  useEffect(() => {
+    checkUser().finally(() => setLoading(false));
+  }, [checkUser]);
 
   return (
     <AuthContext.Provider
