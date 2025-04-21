@@ -6,7 +6,7 @@ AI 기반의 스마트 일본어 학습 플랫폼입니다. JLPT N5부터 N1까�
 
 ➡️ **지금 바로 데모 체험하기:** 현재 개발 중인 기능들을 미리 경험해보세요! 👉 [japanese-study-app.vercel.app](https://japanese-study-app.vercel.app/)
 
----
+<br>
 
 ## ✨ 주요 기능 상세
 
@@ -31,7 +31,7 @@ AI 기반의 스마트 일본어 학습 플랫폼입니다. JLPT N5부터 N1까�
 - **🏆 JLPT 시험 대비 (JLPT Preparation)**
 - **🌐 일본 문화 이해 (Cultural Understanding)**
 
----
+<br>
 
 ## 🚀 기술 스택
 
