@@ -1,4 +1,5 @@
 {
+  "regions": ["icn1"],
   "functions": {
     "app/api/**/route.ts": {
       "includeFiles": "dict/**"
