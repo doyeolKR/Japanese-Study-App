@@ -20,7 +20,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-20 md:py-32">
+      <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-gray-800 dark:to-gray-900 text-white py-20 md:py-32">
         {/* Background Image */}
         {/* <div className="absolute inset-0">
           <Image
@@ -35,6 +35,8 @@ export default function Home() {
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-0 left-0 right-0 h-40 bg-[linear-gradient(to_right,#ffffff33_1px,transparent_1px),linear-gradient(to_bottom,#ffffff33_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
         </div>
+        {/* 다크 모드를 위한 반투명 오버레이 */}
+        <div className="absolute inset-0 bg-black/20 dark:bg-black/40 pointer-events-none"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/2 space-y-8">
@@ -42,13 +44,16 @@ export default function Home() {
                 JLPT N5 부터 N1까지 완벽 대비
               </Badge>
 
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight dark:text-gray-600">
                 AI와 함께하는
                 <br />
-                <span className="text-yellow-300">스마트 일본어</span> 학습
+                <span className="text-yellow-300 dark:text-gray-300">
+                  스마트 일본어
+                </span>{" "}
+                학습
               </h1>
 
-              <p className="text-lg md:text-xl text-blue-100 md:pr-12 leading-relaxed">
+              <p className="text-lg md:text-xl text-blue-100 dark:text-gray-300 md:pr-12 leading-relaxed">
                 회화, 듣기, 독해, 단어 학습을 하나의 플랫폼에서 경험하세요. 개인
                 맞춤형 AI 피드백으로 일본어 실력이 빠르게 향상됩니다.
               </p>
@@ -56,16 +61,17 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Button
                   size="lg"
-                  className="bg-white text-blue-700 hover:bg-blue-50 text-base"
+                  variant="outline"
+                  className="border-white text-blue-700 hover:bg-blue-600/20 hover:text-white dark:border-gray-600 dark:text-white dark:hover:bg-gray-700"
                 >
-                  <Link href="/register" className="flex items-center gap-2">
+                  <Link href="/study" className="flex items-center gap-2">
                     무료로 시작하기 <ArrowRight className="h-4 w-4" />
                   </Link>
                 </Button>
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-white text-blue-700 hover:bg-blue-600/20 hover:text-white text-base"
+                  className="border-white text-blue-700 hover:bg-blue-600/20 hover:text-white dark:border-gray-600 dark:text-white dark:hover:bg-gray-700"
                 >
                   <Link href="/study">학습 둘러보기</Link>
                 </Button>
@@ -73,12 +79,12 @@ export default function Home() {
 
               {/* Social Proof */}
               <div className="pt-6 pb-4">
-                <div className="flex items-center gap-2 text-sm text-blue-100">
+                <div className="flex items-center gap-2 text-sm text-blue-100 dark:text-gray-300">
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className="h-4 w-4 fill-yellow-400 text-yellow-400"
+                        className="h-4 w-4 fill-yellow-400 text-yellow-400 dark:fill-yellow-300 dark:text-yellow-300"
                       />
                     ))}
                   </div>
@@ -96,7 +102,7 @@ export default function Home() {
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1440 80"
-            className="w-full h-auto fill-background"
+            className="w-full h-auto fill-background dark:fill-gray-950"
           >
             <path d="M0,64L80,58.7C160,53,320,43,480,42.7C640,43,800,53,960,58.7C1120,64,1280,64,1360,64L1440,64L1440,80L1360,80C1280,80,1120,80,960,80C800,80,640,80,480,80C320,80,160,80,80,80L0,80Z"></path>
           </svg>
@@ -104,16 +110,16 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-20">
+      <section className="py-20 dark:bg-gray-950">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <Badge className="mb-4 bg-blue-100 text-blue-700 hover:bg-blue-200">
+            <Badge className="mb-4 bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-200">
               학습 기능
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 dark:text-white">
               언어 습득에 최적화된 학습 경험
             </h2>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-muted-foreground dark:text-gray-400">
               과학적으로 검증된 학습 방법론을 기반으로 일본어 실력을 빠르게
               향상시키는 다양한 학습 도구를 제공합니다.
             </p>
@@ -126,14 +132,7 @@ export default function Home() {
               description="간격 반복과 개인화된 알고리즘으로 단어를 효율적으로 암기하세요. JLPT 수준별 필수 단어 학습이 가능합니다."
               linkText="단어 학습하기"
               linkHref="/vocabulary"
-            />
-
-            <FeatureCard
-              icon={<GraduationCap className="h-10 w-10 text-green-600" />}
-              title="문법 마스터"
-              description="체계적인 설명과 다양한 예문으로 일본어 문법을 쉽게 이해하고 활용하세요. 수준별 문법 패턴을 제공합니다."
-              linkText="문법 학습하기"
-              linkHref="/grammar"
+              available={true}
             />
 
             <FeatureCard
@@ -142,6 +141,16 @@ export default function Home() {
               description="실제 상황을 기반으로 한 대화 시나리오로 회화 능력을 향상시키세요. AI가 발음과 표현을 즉시 교정해 드립니다."
               linkText="회화 연습하기"
               linkHref="/conversation"
+              available={true}
+            />
+
+            <FeatureCard
+              icon={<GraduationCap className="h-10 w-10 text-green-600" />}
+              title="문법 마스터"
+              description="체계적인 설명과 다양한 예문으로 일본어 문법을 쉽게 이해하고 활용하세요. 수준별 문법 패턴을 제공합니다."
+              linkText="문법 학습하기"
+              linkHref="/grammar"
+              available={false}
             />
 
             <FeatureCard
@@ -150,6 +159,7 @@ export default function Home() {
               description="일본인 원어민 발음의 오디오와 함께 듣기 능력을 향상시키세요. 속도 조절 기능으로 단계별 학습이 가능합니다."
               linkText="듣기 연습하기"
               linkHref="/listening"
+              available={false}
             />
 
             <FeatureCard
@@ -158,6 +168,7 @@ export default function Home() {
               description="실전과 동일한 형식의 모의고사와 문제 은행으로 JLPT 시험에 완벽히 대비하세요. 취약점 분석도 제공합니다."
               linkText="시험 대비하기"
               linkHref="/jlpt"
+              available={false}
             />
 
             <FeatureCard
@@ -166,20 +177,23 @@ export default function Home() {
               description="언어 학습과 함께 일본 문화, 관습, 에티켓을 배워 실제 상황에서 자연스러운 의사소통이 가능하도록 돕습니다."
               linkText="문화 학습하기"
               linkHref="/culture"
+              available={false}
             />
           </div>
         </div>
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-muted">
+      <section className="py-20 bg-muted dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <Badge className="mb-4">사용자 후기</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <Badge className="mb-4 dark:bg-gray-700 dark:text-gray-300">
+              사용자 후기
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 dark:text-white">
               학습자들의 성공 스토리
             </h2>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-muted-foreground dark:text-gray-400">
               다양한 목표를 가진 학습자들이 저희 플랫폼과 함께 일본어 능력을
               어떻게 향상시켰는지 확인해보세요.
             </p>
@@ -211,7 +225,7 @@ export default function Home() {
       </section>
 
       {/* Statistics Section */}
-      <section className="py-20 bg-gradient-to-br from-indigo-50 to-blue-50">
+      <section className="py-20 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 text-center">
             <StatCard number="100,000+" label="월간 활성 사용자" />
@@ -223,14 +237,16 @@ export default function Home() {
       </section>
 
       {/* Pricing Section */}
-      <section className="py-20">
+      <section className="py-20 dark:bg-gray-950">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <Badge className="mb-4">요금제</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <Badge className="mb-4 dark:bg-gray-700 dark:text-gray-300">
+              요금제
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 dark:text-white">
               당신에게 맞는 학습 플랜을 선택하세요
             </h2>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-muted-foreground dark:text-gray-400">
               모든 플랜은 주요 학습 기능을 포함하며, 7일간의 무료 체험을
               제공합니다.
             </p>
@@ -293,14 +309,16 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 bg-muted">
+      <section className="py-20 bg-muted dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <Badge className="mb-4">자주 묻는 질문</Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <Badge className="mb-4 dark:bg-gray-700 dark:text-gray-300">
+              자주 묻는 질문
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6 dark:text-white">
               궁금한 점이 있으신가요?
             </h2>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-muted-foreground dark:text-gray-400">
               학습자들이 자주 묻는 질문들에 대한 답변을 확인하세요.
             </p>
           </div>
@@ -331,26 +349,27 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-500 to-indigo-600 text-white">
+      <section className="py-20 bg-gradient-to-r from-blue-500 to-indigo-600 dark:from-gray-950 dark:to-black text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             오늘부터 일본어 학습을 시작하세요
           </h2>
-          <p className="text-xl text-blue-100 max-w-2xl mx-auto mb-8">
+          <p className="text-xl text-blue-100 dark:text-gray-300 max-w-2xl mx-auto mb-8">
             전 세계 10만 명 이상의 학습자들과 함께 일본어를 배우고, 새로운
             기회의 세계를 열어보세요.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button
               size="lg"
-              className="bg-white text-blue-700 hover:bg-blue-50"
+              variant="outline"
+              className="border-white text-blue-700 hover:bg-blue-600/20 hover:text-white dark:border-gray-600 dark:text-white dark:hover:bg-gray-700"
             >
               <Link href="/register">무료로 시작하기</Link>
             </Button>
             <Button
               size="lg"
               variant="outline"
-              className="border-white text-blue-700 hover:bg-blue-600/20 hover:text-white"
+              className="border-white text-blue-700 hover:bg-blue-600/20 hover:text-white dark:border-gray-600 dark:text-white dark:hover:bg-gray-700"
             >
               <Link href="/demo">데모 보기</Link>
             </Button>
@@ -368,31 +387,46 @@ function FeatureCard({
   description,
   linkText,
   linkHref,
+  available = true,
 }: {
   icon: React.ReactNode;
   title: string;
   description: string;
   linkText: string;
   linkHref: string;
+  available?: boolean;
 }) {
   return (
     <Card
-      className={`group h-full transition-all shadow-md hover:shadow-lg hover:border-blue-500`}
+      className={`group h-full transition-all shadow-md hover:shadow-lg ${
+        available ? "hover:border-blue-500" : "opacity-70 cursor-not-allowed"
+      }`}
     >
       <CardContent className="p-6 flex flex-col h-full">
         <div
-          className={`rounded-full p-3 w-fit mb-5 bg-muted group-hover:bg-blue-50`}
+          className={`rounded-full p-3 w-fit mb-5 bg-muted ${
+            available ? "group-hover:bg-blue-50" : ""
+          }`}
         >
           {icon}
         </div>
-        <h3 className="text-xl font-semibold mb-3">{title}</h3>
+        <h3 className="text-xl font-semibold mb-3">
+          {title}
+          {!available && <Badge className="ml-2 bg-gray-400">준비 중</Badge>}
+        </h3>
         <p className="text-muted-foreground mb-5 flex-grow">{description}</p>
-        <Link
-          href={linkHref}
-          className="text-blue-600 font-medium inline-flex items-center gap-1 hover:underline mt-auto"
-        >
-          {linkText} <ChevronRight className="h-4 w-4" />
-        </Link>
+        {available ? (
+          <Link
+            href={linkHref}
+            className="text-blue-600 font-medium inline-flex items-center gap-1 hover:underline mt-auto"
+          >
+            {linkText} <ChevronRight className="h-4 w-4" />
+          </Link>
+        ) : (
+          <span className="text-gray-400 font-medium inline-flex items-center gap-1 mt-auto cursor-not-allowed">
+            {linkText} <ChevronRight className="h-4 w-4" />
+          </span>
+        )}
       </CardContent>
     </Card>
   );
@@ -411,24 +445,28 @@ function TestimonialCard({
   avatarUrl: string;
 }) {
   return (
-    <Card className="h-full">
+    <Card className="h-full dark:bg-gray-800 dark:border-gray-700">
       <CardContent className="p-6 flex flex-col h-full">
         <div className="mb-6">
           {[...Array(5)].map((_, i) => (
             <Star
               key={i}
-              className="inline-block h-4 w-4 fill-yellow-400 text-yellow-400 mr-1"
+              className="inline-block h-4 w-4 fill-yellow-400 text-yellow-400 mr-1 dark:fill-yellow-300 dark:text-yellow-300"
             />
           ))}
         </div>
-        <p className="italic text-muted-foreground mb-6 flex-grow">"{quote}"</p>
+        <p className="italic text-muted-foreground dark:text-gray-400 mb-6 flex-grow">
+          "{quote}"
+        </p>
         <div className="flex items-center gap-3 mt-auto">
           <div className="relative h-12 w-12 overflow-hidden rounded-full">
             <Image src={avatarUrl} alt={name} fill className="object-cover" />
           </div>
           <div>
-            <div className="font-semibold">{name}</div>
-            <div className="text-sm text-muted-foreground">{title}</div>
+            <div className="font-semibold dark:text-white">{name}</div>
+            <div className="text-sm text-muted-foreground dark:text-gray-400">
+              {title}
+            </div>
           </div>
         </div>
       </CardContent>
@@ -440,10 +478,10 @@ function TestimonialCard({
 function StatCard({ number, label }: { number: string; label: string }) {
   return (
     <div>
-      <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2">
+      <div className="text-3xl md:text-4xl font-bold text-blue-600 mb-2 dark:text-blue-400">
         {number}
       </div>
-      <div className="text-muted-foreground">{label}</div>
+      <div className="text-muted-foreground dark:text-gray-400">{label}</div>
     </div>
   );
 }
@@ -472,37 +510,47 @@ function PricingCard({
     <Card
       className={`relative h-full transition-all border ${
         popular ? "border-blue-500 shadow-lg" : ""
-      }`}
+      } dark:bg-gray-800 dark:border-gray-700`}
     >
       {popular && (
         <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          <Badge className="bg-blue-500 text-white hover:bg-blue-600">
+          <Badge className="bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700">
             인기 플랜
           </Badge>
         </div>
       )}
       <CardContent className="p-6 pt-8 flex flex-col h-full">
         <div className="mb-6 text-center">
-          <h3 className="text-xl font-semibold mb-4">{title}</h3>
+          <h3 className="text-xl font-semibold mb-4 dark:text-white">
+            {title}
+          </h3>
           <div className="mb-2">
-            <span className="text-3xl font-bold">{price}</span>
-            {period && <span className="text-muted-foreground">/{period}</span>}
+            <span className="text-3xl font-bold dark:text-white">{price}</span>
+            {period && (
+              <span className="text-muted-foreground dark:text-gray-400">
+                /{period}
+              </span>
+            )}
           </div>
-          <p className="text-muted-foreground text-sm">{description}</p>
+          <p className="text-muted-foreground text-sm dark:text-gray-400">
+            {description}
+          </p>
         </div>
 
         <ul className="space-y-3 mb-8 flex-grow">
           {features.map((feature, index) => (
             <li key={index} className="flex items-start gap-2">
               <Check className="h-5 w-5 text-green-500 shrink-0 mt-0.5" />
-              <span>{feature}</span>
+              <span className="dark:text-gray-300">{feature}</span>
             </li>
           ))}
         </ul>
 
         <Button
           className={`mt-auto w-full ${
-            popular ? "bg-blue-600 hover:bg-blue-700" : ""
+            popular
+              ? "bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800"
+              : ""
           }`}
           variant={popular ? "default" : "outline"}
         >
@@ -517,8 +565,8 @@ function PricingCard({
 function FaqItem({ question, answer }: { question: string; answer: string }) {
   return (
     <div className="py-5">
-      <h3 className="text-lg font-semibold mb-3">{question}</h3>
-      <p className="text-muted-foreground">{answer}</p>
+      <h3 className="text-lg font-semibold mb-3 dark:text-white">{question}</h3>
+      <p className="text-muted-foreground dark:text-gray-400">{answer}</p>
     </div>
   );
 }
