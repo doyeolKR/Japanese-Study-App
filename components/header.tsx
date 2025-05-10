@@ -142,7 +142,7 @@ export function Header() {
 
         <div className="flex items-center gap-4">
           <ModeToggle />
-          {mounted && isAuthenticated ? (
+          {/* {mounted && isAuthenticated ? (
             <Button variant="outline" onClick={handleSignOut}>
               로그아웃
             </Button>
@@ -155,7 +155,7 @@ export function Header() {
                 <Link href="/register">회원가입</Link>
               </Button>
             </>
-          )}
+          )} */}
         </div>
       </div>
     </header>
