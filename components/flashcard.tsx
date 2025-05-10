@@ -218,9 +218,9 @@ export function Flashcard({ vocabulary }: FlashcardProps) {
           {/* 단어 카드 */}
           <Card className="mb-4 shadow-lg">
             <CardContent className="p-6 min-h-[300px] flex flex-col relative">
-              <div className="flex-1 flex flex-col items-center justify-center gap-4">
+              <div className="flex-1 flex flex-col items-center justify-center">
                 <div
-                  className="text-4xl mb-2 large-text-ruby"
+                  className="text-5xl mb-2 large-text-ruby"
                   dangerouslySetInnerHTML={{
                     __html: currentWord?.japaneseFurigana || "",
                   }}
@@ -251,13 +251,13 @@ export function Flashcard({ vocabulary }: FlashcardProps) {
             <Card className="mb-4 shadow-lg">
               <CardContent className="p-6 min-h-[200px] flex flex-col items-center justify-center relative">
                 <div
-                  className="text-xl mb-2"
+                  className="text-xl mb-2 text-center w-full"
                   dangerouslySetInnerHTML={{
                     __html: currentWord?.exampleSentenceFurigana || "",
                   }}
                 ></div>
                 {showMeaning && (
-                  <div className="text-muted-foreground">
+                  <div className="text-muted-foreground text-center w-full">
                     {currentWord.example_mean}
                   </div>
                 )}
