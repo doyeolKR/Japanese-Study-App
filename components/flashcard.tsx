@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -27,6 +27,12 @@ export function Flashcard({ vocabulary }: FlashcardProps) {
   const [showExampleCards, setShowExampleCards] = useState<
     Record<number, boolean>
   >({});
+
+  // 스와이프 관련 상태
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+  const minSwipeDistance = 50; // 최소 스와이프 거리 (픽셀)
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const currentWord = vocabulary[currentIndex];
 
@@ -100,6 +106,53 @@ export function Flashcard({ vocabulary }: FlashcardProps) {
     }
     setShowExampleCards({}); // 토글 상태 초기화
   };
+
+  // 스와이프 이벤트 핸들러
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+
+    const distance = touchEndX.current - touchStartX.current;
+    const isSwipe = Math.abs(distance) > minSwipeDistance;
+
+    if (isSwipe) {
+      if (distance > 0) {
+        // 오른쪽으로 스와이프 - 이전 카드
+        goToPrevious();
+      } else {
+        // 왼쪽으로 스와이프 - 다음 카드
+        goToNext();
+      }
+    }
+
+    // 터치 상태 초기화
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
+  // 스와이프 애니메이션 효과
+  useEffect(() => {
+    const cardElement = cardRef.current;
+    if (!cardElement || isListView) return;
+
+    const handleTransitionEnd = () => {
+      cardElement.classList.remove("card-swipe-left", "card-swipe-right");
+    };
+
+    cardElement.addEventListener("transitionend", handleTransitionEnd);
+
+    return () => {
+      cardElement.removeEventListener("transitionend", handleTransitionEnd);
+    };
+  }, [isListView]);
 
   if (!currentWord) return null;
 
@@ -215,64 +268,72 @@ export function Flashcard({ vocabulary }: FlashcardProps) {
       ) : (
         // 카드 보기
         <>
-          {/* 단어 카드 */}
-          <Card className="mb-4 shadow-lg">
-            <CardContent className="p-6 min-h-[300px] flex flex-col relative">
-              <div className="flex-1 flex flex-col items-center justify-center">
-                <div
-                  className="text-5xl mb-2 large-text-ruby"
-                  dangerouslySetInnerHTML={{
-                    __html: currentWord?.japaneseFurigana || "",
-                  }}
-                ></div>
-                {showMeaning && (
-                  <div className="space-y-2 text-center">
-                    <div className="text-sm text-muted-foreground">
-                      {currentWord.part_speech}
-                    </div>
-                    <div className="text-xl">{currentWord.meaning}</div>
-                  </div>
-                )}
-              </div>
-              {/* 음성 출력 버튼 (오른쪽 하단) */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handlePlayAudio(currentWord, false)}
-                className="absolute bottom-2 right-2"
-              >
-                <Volume2 className="h-6 w-6" />
-              </Button>
-            </CardContent>
-          </Card>
-
-          {/* 예문 카드 */}
-          {showExample && (
+          {/* 단어 카드 - 스와이프 기능 추가 */}
+          <div
+            className="card-container"
+            ref={cardRef}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             <Card className="mb-4 shadow-lg">
-              <CardContent className="p-6 min-h-[200px] flex flex-col items-center justify-center relative">
-                <div
-                  className="text-xl mb-2 text-center w-full"
-                  dangerouslySetInnerHTML={{
-                    __html: currentWord?.exampleSentenceFurigana || "",
-                  }}
-                ></div>
-                {showMeaning && (
-                  <div className="text-muted-foreground text-center w-full">
-                    {currentWord.example_mean}
-                  </div>
-                )}
+              <CardContent className="p-6 min-h-[300px] flex flex-col relative">
+                <div className="flex-1 flex flex-col items-center justify-center">
+                  <div
+                    className="text-5xl mb-2 large-text-ruby"
+                    dangerouslySetInnerHTML={{
+                      __html: currentWord?.japaneseFurigana || "",
+                    }}
+                  ></div>
+                  {showMeaning && (
+                    <div className="space-y-2 text-center">
+                      <div className="text-sm text-muted-foreground">
+                        {currentWord.part_speech}
+                      </div>
+                      <div className="text-xl">{currentWord.meaning}</div>
+                    </div>
+                  )}
+                </div>
                 {/* 음성 출력 버튼 (오른쪽 하단) */}
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => handlePlayAudio(currentWord, true)}
+                  onClick={() => handlePlayAudio(currentWord, false)}
                   className="absolute bottom-2 right-2"
                 >
                   <Volume2 className="h-6 w-6" />
                 </Button>
               </CardContent>
             </Card>
-          )}
+
+            {/* 예문 카드 */}
+            {showExample && (
+              <Card className="mb-4 shadow-lg">
+                <CardContent className="p-6 min-h-[200px] flex flex-col items-center justify-center relative">
+                  <div
+                    className="text-xl mb-2 text-center w-full"
+                    dangerouslySetInnerHTML={{
+                      __html: currentWord?.exampleSentenceFurigana || "",
+                    }}
+                  ></div>
+                  {showMeaning && (
+                    <div className="text-muted-foreground text-center w-full">
+                      {currentWord.example_mean}
+                    </div>
+                  )}
+                  {/* 음성 출력 버튼 (오른쪽 하단) */}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handlePlayAudio(currentWord, true)}
+                    className="absolute bottom-2 right-2"
+                  >
+                    <Volume2 className="h-6 w-6" />
+                  </Button>
+                </CardContent>
+              </Card>
+            )}
+          </div>
 
           {/* 이전/다음 버튼 */}
           <div className="flex items-center justify-between mt-4">

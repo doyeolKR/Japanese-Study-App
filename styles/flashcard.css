@@ -16,3 +16,40 @@ rt {
 .large-text-ruby rt {
   margin-bottom: 8px; /* 후리가나와 텍스트 간격 증가 */
 }
+
+/* 스와이프 애니메이션 관련 스타일 */
+.card-container {
+  width: 100%;
+  position: relative;
+  touch-action: pan-y;
+}
+
+.card-swipe-left {
+  animation: swipeLeft 0.3s ease-out;
+}
+
+.card-swipe-right {
+  animation: swipeRight 0.3s ease-out;
+}
+
+@keyframes swipeLeft {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+}
+
+@keyframes swipeRight {
+  0% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+}
