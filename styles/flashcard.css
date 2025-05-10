@@ -21,7 +21,17 @@ rt {
 .card-container {
   width: 100%;
   position: relative;
-  touch-action: pan-y;
+  overflow: visible;
+  transform: translateZ(0); /* 하드웨어 가속 활성화 */
+}
+
+/* 모바일에서 스크롤 방지 */
+@media (max-width: 768px) {
+  .card-container {
+    height: auto;
+    max-height: calc(100vh - 240px); /* 화면 높이에서 헤더와 여백 제외 */
+    overflow: hidden;
+  }
 }
 
 .card-swipe-left {

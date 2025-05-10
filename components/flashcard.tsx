@@ -270,14 +270,14 @@ export function Flashcard({ vocabulary }: FlashcardProps) {
         <>
           {/* 단어 카드 - 스와이프 기능 추가 */}
           <div
-            className="card-container"
+            className="card-container mb-4"
             ref={cardRef}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
           >
             <Card className="mb-4 shadow-lg">
-              <CardContent className="p-6 min-h-[300px] flex flex-col relative">
+              <CardContent className="p-6 min-h-[250px] md:min-h-[300px] flex flex-col relative">
                 <div className="flex-1 flex flex-col items-center justify-center">
                   <div
                     className="text-5xl mb-2 large-text-ruby"
@@ -308,7 +308,7 @@ export function Flashcard({ vocabulary }: FlashcardProps) {
 
             {/* 예문 카드 */}
             {showExample && (
-              <Card className="mb-4 shadow-lg">
+              <Card className="mb-2 shadow-lg">
                 <CardContent className="p-6 min-h-[200px] flex flex-col items-center justify-center relative">
                   <div
                     className="text-xl mb-2 text-center w-full"
